@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <functional>
 #include <memory>
@@ -58,7 +60,7 @@ namespace Utility {
         void Push(const std::shared_ptr<UndoActionBase>& action) {
             m_Actions.push_back(action);
         }
-        
+
         template <typename T, typename ...Args>
         void Push(Args&&... args) {
             m_Actions.push_back(std::make_shared<UndoAction<T>>(std::forward<Args>(args)...));
