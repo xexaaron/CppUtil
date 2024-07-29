@@ -3,6 +3,8 @@
 #include <vector>
 #include <functional>
 #include <memory>
+#include <cstring>
+#include <cassert>
 
 namespace Utility {
 
@@ -17,37 +19,27 @@ namespace Utility {
     class UndoAction : public UndoActionBase {
     public:
         UndoAction(T* data) :
-            Original(*data), // Store the original state
-            Data(data) {}
-
-        void SetOriginal(T original) {
-            Original = original;
-        }
-        void SetData(T* data) {
-            Data = data;
-        }
-
-        T* GetData() {
-            return Data;
-        }
-        const T& GetOriginal() const {
-            return Original;
+            Original(*data), 
+            Data(data) 
+        {
+        #ifndef NDEBUG
+            assert(data && "UndoAction Data is null");
+        #endif //  NDEBUG
         }
 
         virtual void Undo() override {
+        #ifndef NDEBUG
+            assert(data && "UndoAction Data is null");
+        #endif //  NDEBUG
             if (Data) {
-                T temp = *Data; // Save the current state
-                *Data = Original; // Restore the original state
-                Original = temp; // Update the original state to the previous state
+                T temp = *Data; 
+                *Data = Original;
+                Original = temp;
             }
         }
 
         virtual void Redo() override {
-            if (Data) {
-                T temp = *Data; // Save the current state
-                *Data = Original; // Restore the previous state
-                Original = temp; // Update the original state to the previous state
-            }
+            Undo();
         }
 
     private:
