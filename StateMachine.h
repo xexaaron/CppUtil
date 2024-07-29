@@ -11,7 +11,7 @@ namespace Utility {
 		STime(float time = 0.f) : Time(time) {}
 
 		inline operator float() const { return this->Time; }
-
+		
 		inline const float Seconds()		const { return Time; }
 		inline const float MilliSeconds()	const { return Time * 1000.f; }
 		inline const float MicroSeconds()	const { return Time * 100000000.f; }
